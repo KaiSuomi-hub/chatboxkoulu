@@ -1,0 +1,132 @@
+<!-- index.html -->
+<html>
+<head>
+	<title>Ajax JS</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	
+</head>
+<body>
+
+	<style>
+		
+		#body{
+		margin: 0px;
+		padding: 0px;
+		background-color: #CCC;
+		}
+		#wrapper{
+			width: 700px;
+			height: 1000;
+			margin: 0px auto;
+			min-height: 500px;
+			background-color: #FFF;
+			
+		}
+		#messages{
+			overflow-y: auto;
+			height: 1000;
+			width: 600px;
+			margin: 0px auto;
+			margin-top: 50px;
+			border: 1px solid #eee;
+			min-height: 400px;
+		}
+		
+		#inputwrapper{
+			width: 600px;
+			margin: 0px auto;
+		}
+		
+		#enterchat{
+			width: 530px;
+			height: 30px;
+			padding: 5px;
+			
+		}
+		#sendbtn{
+			width: 66px;
+			height: 30px;
+			font-weight: bold;
+			font-family: Tahoma;
+			background-color: #333;
+			color: #FFF;
+			border: 1px solid #000;
+		}
+		
+	</style>
+	<script>
+
+	// Update data 1000 millisec interval
+		setInterval(function(){
+		  updateChat();
+		}, 1000);
+		
+	// SELECT DATA
+	function updateChat(){
+	
+		$.ajax({
+			url: 'chatAppsqllue.php',
+			type: 'post',
+			data: '',
+			success: function(response){	
+			
+				$("#messages").html(response);
+			}			
+		});
+	}
+
+	
+	// INSERT DATA
+	function sendajax(){
+		
+        // haetaan teksti tekstilaatikosta ja luetaan se muuttujaan
+        // tama on objekti open, send, onreadystatuschange, readystate, status i.e. xhttp.open
+		var chatText = $("#enterchat").val();
+		var nick = $("#nick").val();
+
+		// tyhjätään tekstilaatikko
+		$("#enterchat").val("");
+		
+		// Ajax yhteyden muodostus post metodilla. //ei loydy w3schools
+		$.ajax({
+			url: 'chatAppsql.php',
+			type: 'get',
+			data: 'message=' + chatText,
+			// url: 'chatAppsql.php',
+			// type: 'get',
+			// data: 'nick=' + nick,	// viedään parametrinä muuttujan arvo
+			success: function(response){	
+			}
+					//$ komento (selectoriidtahana).html(vastauspalvelimelta);
+			});			
+		};
+	
+	</script>
+		
+
+	<div id="wrapper">
+	
+		<div id="messages"></div>
+	
+		<div id="inputwrapper">
+			<input id="nick" type="text" />
+			<input id="enterchat" type="text" />
+            <input id="sendbtn"type="button" onclick="sendajax()" value="Send" />
+
+		</div>
+	</div>
+
+
+	
+	<!-- <div id="wrapper">
+		<form method="POST" action="chatappsql.php">
+			<input id="nick" name="nick" type="text" value="nick" placeholder="nick"/><br>
+			<input id="enterchat" name="message" type="text" value="messaage" placeholder="teksti"/><br>
+			<button type="button"  value="submit" >laheta viesti</button>
+			
+  			
+		</form>
+		</div>
+	</div> -->
+</body>
+</html>
